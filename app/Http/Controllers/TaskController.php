@@ -27,4 +27,22 @@ class TaskController extends Controller
 
 		return redirect()->back()->with('success', 'Task created successfully.');
 	}
+
+	public function update(Request $request, $id)
+	{
+		$task = Task::findOrFail($id);
+
+		$request->validate([
+			'title' => 'required|unique:tasks,title,' . $task->id . '|max:255',
+			'description' => 'nullable|string',
+			'completed' => 'boolean',
+		]);
+
+		$task->title = $request->title;
+		$task->description = $request->description;
+		$task->completed = $request->completed;
+		$task->save();
+
+		return redirect()->back()->with('success', 'Task updated successfully.');
+	}
 }
