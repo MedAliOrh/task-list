@@ -10,13 +10,6 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/register', function () {
-	return view('register');
-})->name('register');
-
-Route::get('/login', function () {
-	return view('login');
-})->name('login');
 
 Route::middleware(['auth'])->group(function () {
 	Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
