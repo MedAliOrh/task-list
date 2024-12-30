@@ -6,6 +6,10 @@
 	<title>Task List</title>
 </head>
 <body>
+	<h1>Task List :</h1>
+	@if (session('success'))
+		<p>{{ session('success') }}</p>
+	@endif
 	
 </body>
 </html>
