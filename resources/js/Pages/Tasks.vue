@@ -141,11 +141,13 @@ export default {
 									<span v-else class="badge bg-warning">On Going</span>
 								</td>
 								<td>
-									<button v-if="!task.completed" @click="markAsComplete(task)" class="btn btn-primary">Complete</button>
-									<button v-if="!task.editing && !task.completed" @click="editTask(task)" class="btn btn-info">Edit</button>
-									<button v-if="task.editing" @click="updateTask(task)" class="btn btn-success" :disabled="!task.title">Update</button>
-									<button v-if="task.editing" @click="cancelEditTask(task)" class="btn btn-secondary">Cancel</button>
-									<button @click="deleteTask(task.id)" class="btn btn-danger">Delete</button>
+									<div class="action-icons">
+										<i v-if="!task.completed" @click="markAsComplete(task)" class="fas fa-check text-success"></i>
+										<i v-if="!task.editing && !task.completed" @click="editTask(task)" class="fas fa-edit text-info"></i>
+										<i v-if="task.editing" @click="updateTask(task)" :class="['fas', 'fa-save', 'text-success', { 'disabled': !task.title }]"></i>
+										<i v-if="task.editing" @click="cancelEditTask(task)" class="fas fa-times text-secondary"></i>
+										<i @click="deleteTask(task.id)" class="fas fa-trash text-danger"></i>
+									</div>
 								</td>
 							</tr>
 							<tr v-if="tasks.length === 0">

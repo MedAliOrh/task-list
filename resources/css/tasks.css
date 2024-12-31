@@ -66,6 +66,7 @@ body {
 }
 
 .info-icon {
+  display: inline-block;
   cursor: pointer;
   font-size: 24px;
   color: #007bff;
@@ -90,4 +91,25 @@ body {
 
 .info-area ul li {
   margin-bottom: 10px;
+}
+
+.action-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-icons i {
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.action-icons i.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
