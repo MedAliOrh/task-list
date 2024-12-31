@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import '../../css/tasks.css';
 
 export default {
 	name: "TaskList",
@@ -77,21 +78,9 @@ export default {
 	},
 }
 </script>
-<style scoped>
-.alert {
-	margin-top: 20px;
-}
 
-.alert-success {
-	padding: 10px;
-	background-color: #d4edda;
-	border-color: #c3e6cb;
-	color: #155724;
-}
-
-</style>
 <template>
-	<div>
+	<div class="task-list-container">
 		<h1>Task List :</h1>
 		<div v-if="successMessage" class="alert alert-success">
 			{{ successMessage }}
@@ -111,6 +100,7 @@ export default {
 				<tr>
 					<th>Title</th>
 					<th>Description</th>
+					<th>Status</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -123,6 +113,10 @@ export default {
 					</td>
 					<td v-if="task.editing">
 						<textarea v-model="task.description" required class="form-control"></textarea>	
+					</td>
+					<td>
+						<span v-if="task.completed" class="badge bg-success">Completed</span>
+						<span v-else class="badge bg-warning">On Going</span>
 					</td>
 					<td>
 						<button v-if="!task.completed" @click="markAsComplete(task)" class="btn btn-primary">Complete</button>
