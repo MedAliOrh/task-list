@@ -25,6 +25,7 @@ class TaskController extends Controller
 		$task->user_id = Auth::id();
 		$task->title = $request->title;
 		$task->description = $request->description;
+		$task->completed = false;
 		$task->save();
 
 		return redirect()->back()->with('success', 'Task created successfully.');

@@ -15,7 +15,9 @@
 			<li>
 				{{ $task->title }} - {{ $task->description }}
 				@if ($task->completed)
-					<span style="color: green;">Completed</span>
+					(<span style="color: green;">Completed</span>)
+				@else
+					(<span style="color: red;">Not Completed</span>)
 				@endif
 				<form action="/tasks/{{ $task->id }}" method="POST">
 					@csrf
