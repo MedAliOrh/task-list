@@ -2,7 +2,6 @@
 import axios from "axios";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
-import '../../css/tasks.css';
 
 export default {
 	name: "TaskList",
@@ -133,37 +132,39 @@ export default {
 					</ul>
 				</div>
 			</div>
-			<div class="w-full md:w-2/3 p-4">
-				<div class="task-list-container">
-					<h1 class="text-center text-2xl font-bold mb-4"><i class="fa-solid fa-lines-leaning"></i>  Task Manager </h1>
-					<div v-if="successMessage" class="alert alert-success bg-green-100 text-green-800 p-4 rounded mb-4"> 
-						{{ successMessage }}
-					</div>
-					<div v-if="errorMessage" class="alert alert-danger bg-red-100 text-red-800 p-4 rounded mb-4">
-						{{ errorMessage }}
-					</div>
+			<div v-if="successMessage" class="alert alert-success bg-green-100 text-center text-green-800 p-4 rounded mb-4 w-[30%]"> 
+				<i class="fa-solid fa-pen-ruler pr-12"></i>
+				{{ successMessage }}
+			</div>
+			<div v-if="errorMessage" class="alert alert-danger bg-red-100 text-center text-red-800 p-4 rounded mb-4 w-full">
+				<i class="fa-solid fa-circle-exclamation"></i>
+				{{ errorMessage }}
+			</div>
+			<div class="w-full">
+				<div class="task-list-container w-full h-full">
+					<h1 class="text-center text-2xl font-bold mb-4 text-4xl"><i class="fa-solid fa-lines-leaning "></i>  Task Manager </h1>
 
 					<form @submit.prevent="addTask" class="form-group mb-4">
 						<label for="title" class="block text-gray-700 font-bold mb-2">Title:</label>
 						<input type="text" v-model="newTask.title" class="form-control w-full p-2 border border-gray-300 rounded mb-4" id="title" name="title" placeholder="Enter Task Title">
 						<label for="description" class="block text-gray-700 font-bold mb-2">Description:</label>
 						<textarea v-model="newTask.description" class="form-control w-full p-2 border border-gray-300 rounded mb-4" id="description" name="description" placeholder="Enter Task Description"></textarea>
-						<button type="submit" class="btn btn-primary bg-blue-600 text-white py-2 px-4 rounded" :disabled="!newTask.title">Add Task</button>
+						<button type="submit" :class="['btn', 'btn-primary', 'bg-blue-600', 'text-white', 'py-2', 'px-4', 'rounded', {'opacity-50 cursor-not-allowed': !newTask.title}]">Add Task</button>
 					</form>
 					<h1 class="text-center text-4xl font-bold"><i class="fa-solid fa-cubes"></i>  Task List 	<i @click="toogleHideCompleted" :class="isCompletedHidden ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"></i></h1>
 					<table class="table-auto w-full border-collapse border border-gray-300">
 						<thead>
 							<tr class="bg-gray-200">
-								<th class="border border-gray-300 p-2">Title</th>
-								<th class="border border-gray-300 p-2">Description</th>
-								<th class="border border-gray-300 p-2">Status</th>
-								<th class="border border-gray-300 p-2">Action</th>
+								<th class="border border-gray-300 p-2 w-1/6">Title</th>
+								<th class="border border-gray-300 p-2 w-1/2">Description</th>
+								<th class="border border-gray-300 p-2 w-1/10">Status</th>
+								<th class="border border-gray-300 p-2 w-1/5">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="task in filteredTasks" :key="task.id">
-								<td v-if="!task.editing" class="border border-gray-300 p-2">{{ task.title }}</td>
-								<td v-if="!task.editing" class="border border-gray-300 p-2">{{ task.description }}</td>
+							<tr v-for="task in filteredTasks" :key="task.id" class="bg-white h-[100px]">
+								<td v-if="!task.editing" class="border border-gray-300 p-2 overflow-x-auto whitespace-nowrap">{{ task.title }}</td>
+								<td v-if="!task.editing" class="border border-gray-300 p-2 overflow-x-auto whitespace-nowrap">{{ task.description }}</td>
 								<td v-if="task.editing" class="border border-gray-300 p-2">
 									<input type="text" v-model="task.title" required class="form-control w-full p-2 border border-gray-300 rounded">
 								</td>
@@ -205,7 +206,8 @@ body {
 }
 
 .task-list-container {
-  max-width: 800px;
+  width: 100%;
+  height: 100%;
   margin: 50px auto;
   padding: 20px;
   border-radius: 8px;
@@ -261,6 +263,10 @@ body {
 	color: #155724;
 }
 
+.table-auto {
+  table-layout: fixed;
+  width: 100%;
+}
 .info-icon {
   display: inline-block;
   cursor: pointer;
@@ -310,6 +316,10 @@ body {
   opacity: 0.5;
 }
 
+.action-icons i.opacity-50 {
+  pointer-events: none;
+}
+
 .task-list-container label {
   display: inline-block;
   font-size: 16px;
@@ -317,5 +327,9 @@ body {
   margin-bottom: 5px;
   padding: 5px;
   border-radius: 4px;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
 }
 </style>

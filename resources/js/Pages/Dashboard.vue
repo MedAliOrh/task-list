@@ -23,7 +23,7 @@ import { Head, Link } from '@inertiajs/vue3';
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         You're logged in!
 						<br />
-					<Link href="/tasks" class="btn btn-primary mt-4">View Tasks</Link>
+					<Link href="/tasks" class="btn btn-primary mt-4">Task Manager</Link>
                     </div>
                 </div>
             </div>
