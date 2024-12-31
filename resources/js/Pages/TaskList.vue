@@ -1,3 +1,72 @@
+<script>
+import axios from "axios";
+
+export default {
+	data() {
+		return {
+			tasks: [],
+			newTask: {
+				title: "",
+				description: "",
+			},
+			successMessage: "",
+			errorMessage: "",
+		};
+	},
+	mounted() {
+		this.getTasks();
+	},
+	methods: {
+		getTasks() {
+			axios.get("/tasks").then((response) => {
+				this.tasks = response.data;
+			});
+		},
+		addTask() {
+			axios
+				.post("/tasks", this.newTask)
+				.then((response) => {
+					this.tasks.push(response.data);
+					this.newTask.title = "";
+					this.newTask.description = "";
+					this.successMessage = "Task Added Successfully";
+				})
+				.catch((error) => {
+					this.errorMessage = "Something went wrong: " + error;
+				});
+		},
+		deleteTask(taskId) {
+			axios.delete(`/tasks/${taskId}`).then((response) => {
+				this.tasks = this.tasks.filter((task) => task.id !== taskId);
+				this.successMessage = "Task Deleted Successfully";
+			});
+		},
+		editTask(task) {
+			task.editing = true;
+		},
+		updateTask(task) {
+			axios.put(`/tasks/${task.id}`, {
+				title: task.title,
+				description: task.description,
+				completed: task.completed,
+			}).then((response) => {
+				this.successMessage = "Task Updated Successfully";
+				task.editing = false;
+			});
+		},
+		cancelEditTask(task) {
+			task.editing = false;
+			this.getTasks();
+		},
+		markAsComplete(task) {
+			axios.put(`/tasks/${task.id}/complete`).then((response) => {
+				task.completed = true;
+				this.successMessage = "Task Completed Successfully";
+			});
+		},
+	},
+}
+</script>
 <template>
 	<div>
 		<h1>Task List :</h1>
@@ -42,6 +111,6 @@
 				</tr>
 			</tbody>
 		</table>
-
 	</div>
 </template>
+
