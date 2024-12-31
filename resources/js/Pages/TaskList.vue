@@ -39,6 +39,9 @@ export default {
 			axios.delete(`/tasks/${taskId}`).then((response) => {
 				this.tasks = this.tasks.filter((task) => task.id !== taskId);
 				this.successMessage = "Task Deleted Successfully";
+			})
+			.catch((error) => {
+				this.errorMessage = "Something went wrong: " + error;
 			});
 		},
 		editTask(task) {
@@ -52,6 +55,9 @@ export default {
 			}).then((response) => {
 				this.successMessage = "Task Updated Successfully";
 				task.editing = false;
+			})
+			.catch((error) => {
+				this.errorMessage = "Something went wrong: " + error;
 			});
 		},
 		cancelEditTask(task) {
@@ -62,6 +68,9 @@ export default {
 			axios.put(`/tasks/${task.id}/complete`).then((response) => {
 				task.completed = true;
 				this.successMessage = "Task Completed Successfully";
+			})
+			.catch((error) => {
+				this.errorMessage = "Something went wrong: " + error;
 			});
 		},
 	},
