@@ -37,9 +37,18 @@ export default {
 		getTasks() {
 			axios.get("/api/tasks").then((response) => {
 				this.tasks = response.data;
+			})
+			.catch((error) => {
+				this.errorMessage = "Something went wrong: " + error;
+				this.successMessage = "";
 			});
 		},
 		addTask() {
+			if (this.isTitleDuplicated(this.newTask.title)) {
+				this.errorMessage = "Task title already exists";
+				this.successMessage = "";
+				return;
+			}
 			axios
 				.post("/api/tasks", this.newTask)
 				.then((response) => {
@@ -47,35 +56,49 @@ export default {
 					this.newTask.title = "";
 					this.newTask.description = "";
 					this.successMessage = "Task Added Successfully";
+					this.errorMessage = "";
 				})
 				.catch((error) => {
 					this.errorMessage = "Something went wrong: " + error;
+					this.successMessage = "";
 				});
 		},
 		deleteTask(taskId) {
 			axios.delete(`/api/tasks/${taskId}`).then((response) => {
 				this.tasks = this.tasks.filter((task) => task.id !== taskId);
 				this.successMessage = "Task Deleted Successfully";
+				this.errorMessage = "";
 			})
 			.catch((error) => {
 				this.errorMessage = "Something went wrong: " + error;
+				this.successMessage = "";
 			});
 		},
 		editTask(task) {
 			task.editing = true;
 		},
 		updateTask(task) {
+			if (this.isTitleDuplicated(task.title, task.id)) {
+				this.errorMessage = "Task title already exists";
+				this.successMessage = "";
+				return;
+			}
 			axios.put(`/api/tasks/${task.id}`, {
 				title: task.title,
 				description: task.description,
 				completed: task.completed,
 			}).then((response) => {
 				this.successMessage = "Task Updated Successfully";
+				this.errorMessage = "";
 				task.editing = false;
 			})
 			.catch((error) => {
 				this.errorMessage = "Something went wrong: " + error;
+				this.successMessage = "";
 			});
+		},
+		isTitleDuplicated(title, id = null) {
+			return this.tasks.some((task) => task.title === title && task.id !== id);
 		},
 		cancelEditTask(task) {
 			task.editing = false;
@@ -85,9 +108,11 @@ export default {
 			axios.put(`/api/tasks/${task.id}/complete`).then((response) => {
 				task.completed = true;
 				this.successMessage = "Task Completed Successfully";
+				this.errorMessage = "";
 			})
 			.catch((error) => {
 				this.errorMessage = "Something went wrong: " + error;
+				this.successMessage = "";
 			});
 		},
 		toggleHelp() {
@@ -132,12 +157,12 @@ export default {
 					</ul>
 				</div>
 			</div>
-			<div v-if="successMessage" class="alert alert-success bg-green-100 text-center text-green-800 p-4 rounded mb-4 w-[30%]"> 
+			<div v-if="successMessage" class="alert bg-green-100 text-center text-green-800 p-4 rounded mb-4 w-[30%]"> 
 				<i class="fa-solid fa-pen-ruler pr-12"></i>
 				{{ successMessage }}
 			</div>
-			<div v-if="errorMessage" class="alert alert-danger bg-red-100 text-center text-red-800 p-4 rounded mb-4 w-full">
-				<i class="fa-solid fa-circle-exclamation"></i>
+			<div v-if="errorMessage" class="alert alert-danger bg-red-100 text-center text-red-800 p-4 rounded mb-4 w-[30%]">
+				<i class="fa-solid fa-circle-exclamation pr-12"></i>
 				{{ errorMessage }}
 			</div>
 			<div class="w-full">
@@ -164,7 +189,10 @@ export default {
 						<tbody>
 							<tr v-for="task in filteredTasks" :key="task.id" class="bg-white h-[100px]">
 								<td v-if="!task.editing" class="border border-gray-300 p-2 overflow-x-auto whitespace-nowrap">{{ task.title }}</td>
-								<td v-if="!task.editing" class="border border-gray-300 p-2 overflow-x-auto whitespace-nowrap">{{ task.description }}</td>
+								<td v-if="!task.editing" class="border border-gray-300 p-2 overflow-x-auto whitespace-nowrap">
+									<span v-if="!task.description" class="text-gray-500">No Description</span>
+									<span v-else>{{ task.description }}</span>
+								</td>
 								<td v-if="task.editing" class="border border-gray-300 p-2">
 									<input type="text" v-model="task.title" required class="form-control w-full p-2 border border-gray-300 rounded">
 								</td>
@@ -254,13 +282,6 @@ body {
 
 .alert {
 	margin-top: 20px;
-}
-
-.alert-success {
-	padding: 10px;
-	background-color: #d4edda;
-	border-color: #c3e6cb;
-	color: #155724;
 }
 
 .table-auto {
