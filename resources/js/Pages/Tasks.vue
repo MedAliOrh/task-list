@@ -13,6 +13,7 @@ export default {
 			},
 			successMessage: "",
 			errorMessage: "",
+			showHelp: false,
 		};
 	},
 	mounted() {
@@ -75,62 +76,86 @@ export default {
 				this.errorMessage = "Something went wrong: " + error;
 			});
 		},
+		toggleHelp() {
+			this.showHelp = !this.showHelp;
+		},
 	},
 }
 </script>
 
 <template>
-	<div class="task-list-container">
-		<h1>Task List :</h1>
-		<div v-if="successMessage" class="alert alert-success">
-			{{ successMessage }}
-			{{ errorMessage }}
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="info-icon" @click="toggleHelp">
+					<i class="fas fa-info-circle"></i>
+				</div>
+				<div class="info-area p-3 mb-3 bg-light rounded" v-show="showHelp">
+					<h2>How the System Works</h2>
+					<p>Welcome to the Task Management System. Here's how you can use it:</p>
+					<ul>
+						<li><strong>Add Task:</strong> Fill in the title and description, then click "Add Task" to create a new task.</li>
+						<li><strong>Edit Task:</strong> Click "Edit" to modify an existing task. Make your changes and click "Update" to save.</li>
+						<li><strong>Complete Task:</strong> Click "Complete" to mark a task as completed.</li>
+						<li><strong>Delete Task:</strong> Click "Delete" to remove a task from the list.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="task-list-container">
+					<h1>Task List :</h1>
+					<div v-if="successMessage" class="alert alert-success">
+						{{ successMessage }}
+						{{ errorMessage }}
+					</div>
+
+					<form @submit.prevent="addTask" class="form-group">
+						<label for="title">Title:</label>
+						<input type="text" v-model="newTask.title" class="form-control" id="title" name="title" placeholder="Enter Task Title">
+						<label for="description">Description:</label>
+						<textarea v-model="newTask.description" class="form-control" id="description" name="description" placeholder="Enter Task Description"></textarea>
+						<button type="submit" class="btn btn-primary" :disabled="!newTask.title">Add Task</button>
+					</form>
+
+					<table class="table table-bordered mt-3">
+						<thead>
+							<tr>
+								<th>Title</th>
+								<th>Description</th>
+								<th>Status</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="task in tasks" :key="task.id">
+								<td v-if="!task.editing">{{ task.title }}</td>
+								<td v-if="!task.editing">{{ task.description }}</td>
+								<td v-if="task.editing">
+									<input type="text" v-model="task.title" required class="form-control">
+								</td>
+								<td v-if="task.editing">
+									<textarea v-model="task.description" required class="form-control"></textarea>	
+								</td>
+								<td>
+									<span v-if="task.completed" class="badge bg-success">Completed</span>
+									<span v-else class="badge bg-warning">On Going</span>
+								</td>
+								<td>
+									<button v-if="!task.completed" @click="markAsComplete(task)" class="btn btn-primary">Complete</button>
+									<button v-if="!task.editing && !task.completed" @click="editTask(task)" class="btn btn-info">Edit</button>
+									<button v-if="task.editing" @click="updateTask(task)" class="btn btn-success" :disabled="!task.title">Update</button>
+									<button v-if="task.editing" @click="cancelEditTask(task)" class="btn btn-secondary">Cancel</button>
+									<button @click="deleteTask(task.id)" class="btn btn-danger">Delete</button>
+								</td>
+							</tr>
+							<tr v-if="tasks.length === 0">
+								<td colspan="3" class="text-center">No Task Found</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
-
-		<form @submit.prevent="addTask" class="form-group">
-			<label for="title">Title:</label>
-			<input type="text" v-model="newTask.title" class="form-control" id="title" name="title" placeholder="Enter Task Title">
-			<label for="description">Description:</label>
-			<textarea v-model="newTask.description" class="form-control" id="description" name="description" placeholder="Enter Task Description"></textarea>
-			<button type="submit" class="btn btn-primary" :disabled="!newTask.title">Add Task</button>
-		</form>
-
-		<table class="table table-bordered mt-3">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Description</th>
-					<th>Status</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="task in tasks" :key="task.id">
-					<td v-if="!task.editing">{{ task.title }}</td>
-					<td v-if="!task.editing">{{ task.description }}</td>
-					<td v-if="task.editing">
-						<input type="text" v-model="task.title" required class="form-control">
-					</td>
-					<td v-if="task.editing">
-						<textarea v-model="task.description" required class="form-control"></textarea>	
-					</td>
-					<td>
-						<span v-if="task.completed" class="badge bg-success">Completed</span>
-						<span v-else class="badge bg-warning">On Going</span>
-					</td>
-					<td>
-						<button v-if="!task.completed" @click="markAsComplete(task)" class="btn btn-primary">Complete</button>
-						<button v-if="!task.editing && !task.completed" @click="editTask(task)" class="btn btn-info">Edit</button>
-						<button v-if="task.editing" @click="updateTask(task)" class="btn btn-success" :disabled="!task.title">Update</button>
-						<button v-if="task.editing" @click="cancelEditTask(task)" class="btn btn-secondary">Cancel</button>
-						<button @click="deleteTask(task.id)" class="btn btn-danger">Delete</button>
-					</td>
-				</tr>
-				<tr v-if="tasks.length === 0">
-					<td colspan="3" class="text-center">No Task Found</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 </template>
 
