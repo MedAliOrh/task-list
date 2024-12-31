@@ -94,18 +94,18 @@ export default {
 					<h2 class="text-center mt-2 mb-2 fs-4">How the System Works</h2>
 					<hr>
 					<p>Welcome to the Task Management System. Here's how you can use it:</p>
-					<hr>
+					<hr class="mb-3">
 					<ul>
-						<li><strong>Add Task:</strong> Fill in the title and description, then click "Add Task" to create a new task.</li>
-						<li><strong>Edit Task:</strong> Click "Edit" to modify an existing task. Make your changes and click "Update" to save.</li>
-						<li><strong>Complete Task:</strong> Click "Complete" to mark a task as completed.</li>
-						<li><strong>Delete Task:</strong> Click "Delete" to remove a task from the list.</li>
+						<li><strong>Add Task:</strong> Fill in the title (mendatory) and description, then click "Add Task" to create a new task.</li>
+						<li><strong>Edit Task:</strong> Click <i class="fas fa-edit"></i> to modify any existing task. Make your changes and click <i class="fas fa-save"></i> again to save.</li>
+						<li><strong>Complete Task:</strong> Click <i class="fas fa-check"></i> to mark a task as completed.</li>
+						<li><strong>Delete Task:</strong> Click <i class="fas fa-trash"></i> to remove a task from the list.</li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-md-8">
 				<div class="task-list-container">
-					<h1 class="text-center mt-3 fs-1"><i class="fa-solid fa-lines-leaning"></i>  Task List :</h1>
+					<h1 class="text-center mt-3 fs-1"><i class="fa-solid fa-lines-leaning"></i>  Task Manager </h1>
 					<div v-if="successMessage" class="alert alert-success">
 						{{ successMessage }}
 						{{ errorMessage }}
@@ -118,7 +118,7 @@ export default {
 						<textarea v-model="newTask.description" class="form-control" id="description" name="description" placeholder="Enter Task Description"></textarea>
 						<button type="submit" class="btn btn-primary" :disabled="!newTask.title">Add Task</button>
 					</form>
-
+					<h1 class="text-center mt-3 fs-1"><i class="fa-solid fa-cubes"></i>  Task List </h1>
 					<table class="table table-bordered mt-3">
 						<thead>
 							<tr>
