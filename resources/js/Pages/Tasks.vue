@@ -92,7 +92,7 @@ export default {
 			<input type="text" v-model="newTask.title" class="form-control" id="title" name="title" placeholder="Enter Task Title">
 			<label for="description">Description:</label>
 			<textarea v-model="newTask.description" class="form-control" id="description" name="description" placeholder="Enter Task Description"></textarea>
-			<button @click.prevent="addTask" type="submit" class="btn btn-primary">Add Task</button>
+			<button type="submit" class="btn btn-primary" :disabled="!newTask.title">Add Task</button>
 		</form>
 
 		<table class="table table-bordered mt-3">
@@ -120,8 +120,8 @@ export default {
 					</td>
 					<td>
 						<button v-if="!task.completed" @click="markAsComplete(task)" class="btn btn-primary">Complete</button>
-						<button v-if="!task.editing" @click="editTask(task)" class="btn btn-info">Edit</button>
-						<button v-if="task.editing" @click="updateTask(task)" class="btn btn-success">Update</button>
+						<button v-if="!task.editing && !task.completed" @click="editTask(task)" class="btn btn-info">Edit</button>
+						<button v-if="task.editing" @click="updateTask(task)" class="btn btn-success" :disabled="!task.title">Update</button>
 						<button v-if="task.editing" @click="cancelEditTask(task)" class="btn btn-secondary">Cancel</button>
 						<button @click="deleteTask(task.id)" class="btn btn-danger">Delete</button>
 					</td>
