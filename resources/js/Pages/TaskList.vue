@@ -76,6 +76,19 @@ export default {
 	},
 }
 </script>
+<style scoped>
+.alert {
+	margin-top: 20px;
+}
+
+.alert-success {
+	padding: 10px;
+	background-color: #d4edda;
+	border-color: #c3e6cb;
+	color: #155724;
+}
+
+</style>
 <template>
 	<div>
 		<h1>Task List :</h1>
