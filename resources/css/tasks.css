@@ -1,5 +1,5 @@
 body {
-  background-color: #f8f9fa;
+  background-color: #c1f6ed;
   font-family: Arial, sans-serif;
 }
 
@@ -7,7 +7,7 @@ body {
   max-width: 800px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: #449342;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -25,6 +25,10 @@ body {
   margin-bottom: 10px;
 }
 
+.task-list-container table {
+  background-color: #3fd0c9;
+}
+
 .task-list-container .btn {
   width: 100%;
 }
@@ -36,6 +40,7 @@ body {
 
 .task-list-container th,
 .task-list-container td {
+  background-color: #3fd0c9;
   text-align: center;
   vertical-align: middle;
 }
