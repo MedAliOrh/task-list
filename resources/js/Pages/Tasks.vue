@@ -2,6 +2,7 @@
 import axios from "axios";
 
 export default {
+	name: "TaskList",
 	data() {
 		return {
 			tasks: [],
@@ -18,13 +19,13 @@ export default {
 	},
 	methods: {
 		getTasks() {
-			axios.get("/tasks").then((response) => {
+			axios.get("/api/tasks").then((response) => {
 				this.tasks = response.data;
 			});
 		},
 		addTask() {
 			axios
-				.post("/tasks", this.newTask)
+				.post("/api/tasks", this.newTask)
 				.then((response) => {
 					this.tasks.push(response.data);
 					this.newTask.title = "";
@@ -36,7 +37,7 @@ export default {
 				});
 		},
 		deleteTask(taskId) {
-			axios.delete(`/tasks/${taskId}`).then((response) => {
+			axios.delete(`/api/tasks/${taskId}`).then((response) => {
 				this.tasks = this.tasks.filter((task) => task.id !== taskId);
 				this.successMessage = "Task Deleted Successfully";
 			})
@@ -48,7 +49,7 @@ export default {
 			task.editing = true;
 		},
 		updateTask(task) {
-			axios.put(`/tasks/${task.id}`, {
+			axios.put(`/api/tasks/${task.id}`, {
 				title: task.title,
 				description: task.description,
 				completed: task.completed,
@@ -65,7 +66,7 @@ export default {
 			this.getTasks();
 		},
 		markAsComplete(task) {
-			axios.put(`/tasks/${task.id}/complete`).then((response) => {
+			axios.put(`/api/tasks/${task.id}/complete`).then((response) => {
 				task.completed = true;
 				this.successMessage = "Task Completed Successfully";
 			})
@@ -130,6 +131,9 @@ export default {
 						<button v-if="task.editing" @click="cancelEditTask(task)" class="btn btn-secondary">Cancel</button>
 						<button @click="deleteTask(task.id)" class="btn btn-danger">Delete</button>
 					</td>
+				</tr>
+				<tr v-if="tasks.length === 0">
+					<td colspan="3" class="text-center">No Task Found</td>
 				</tr>
 			</tbody>
 		</table>
