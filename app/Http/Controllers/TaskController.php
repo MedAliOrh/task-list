@@ -11,7 +11,7 @@ class TaskController extends Controller
     public function index()
 	{
 		$tasks = Task::where('user_id', Auth::id())->get();
-		return view('tasks.index', compact('tasks'));
+		return response()->json($tasks);
 	}
 
 	public function store(Request $request)
@@ -25,9 +25,10 @@ class TaskController extends Controller
 		$task->user_id = Auth::id();
 		$task->title = $request->title;
 		$task->description = $request->description;
+		$task->completed = false;
 		$task->save();
 
-		return redirect()->back()->with('success', 'Task created successfully.');
+		return response()->json($task);
 	}
 
 	public function update(Request $request, $id)
@@ -45,7 +46,7 @@ class TaskController extends Controller
 		$task->completed = $request->completed;
 		$task->save();
 
-		return redirect()->back()->with('success', 'Task updated successfully.');
+		return response()->json($task);
 	}
 
 	public function destroy($id)
@@ -53,6 +54,15 @@ class TaskController extends Controller
 		$task = Task::findOrFail($id);
 		$task->delete();
 
-		return redirect()->back()->with('success', 'Task deleted successfully.');
+		return response()->json(['message' => 'Task deleted successfully.']);
+	}
+
+	public function complete($id)
+	{
+		$task = Task::findOrFail($id);
+		$task->completed = true;
+		$task->save();
+
+		return response()->json($task);
 	}
 }

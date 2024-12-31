@@ -20,15 +20,23 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 	Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-	Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
-    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
-    Route::put('/tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
-    Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::get('/tasks', function () {
+		return Inertia::render('Tasks');
+	})->name('tasks');
+});
+
+Route::middleware('auth')->prefix('api')->group(function () {
+
+	Route::get('/tasks', [TaskController::class, 'index']);
+	Route::post('/tasks', [TaskController::class, 'store']);
+	Route::put('/tasks/{id}', [TaskController::class, 'update']);
+	Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
+	Route::put('/tasks/{id}/complete', [TaskController::class, 'complete']);
 });
 
 require __DIR__.'/auth.php';

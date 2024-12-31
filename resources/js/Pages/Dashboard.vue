@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -22,9 +22,17 @@ import { Head } from '@inertiajs/vue3';
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         You're logged in!
+						<br />
+					<Link href="/tasks" class="btn btn-primary mt-4">Task Manager</Link>
                     </div>
                 </div>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
+
+<style scoped>
+.btn {
+	@apply inline-block px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600;
+}
+</style>
