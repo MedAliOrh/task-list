@@ -91,8 +91,10 @@ export default {
 					<i class="fas fa-info-circle"></i>
 				</div>
 				<div class="info-area p-3 mb-3 bg-light rounded" v-show="showHelp">
-					<h2>How the System Works</h2>
+					<h2 class="text-center mt-2 mb-2 fs-4">How the System Works</h2>
+					<hr>
 					<p>Welcome to the Task Management System. Here's how you can use it:</p>
+					<hr>
 					<ul>
 						<li><strong>Add Task:</strong> Fill in the title and description, then click "Add Task" to create a new task.</li>
 						<li><strong>Edit Task:</strong> Click "Edit" to modify an existing task. Make your changes and click "Update" to save.</li>
@@ -103,7 +105,7 @@ export default {
 			</div>
 			<div class="col-md-8">
 				<div class="task-list-container">
-					<h1>Task List :</h1>
+					<h1 class="text-center mt-3 fs-1"><i class="fa-solid fa-lines-leaning"></i>  Task List :</h1>
 					<div v-if="successMessage" class="alert alert-success">
 						{{ successMessage }}
 						{{ errorMessage }}
