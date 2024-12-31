@@ -39,6 +39,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    :href="route('tasks')"
+                                    :active="route().current('tasks')"
+                                >
+                                    Task Manager
+                                </NavLink>
                             </div>
                         </div>
 
