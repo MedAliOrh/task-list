@@ -107,6 +107,4 @@ The application was made for the sole purpose to prove one's skills and understa
 
 ---
 
-## Submission
-
 Thank you for reviewing this project!
